@@ -1,5 +1,11 @@
 # Inventory Management System
 
+## Run the app
+- Double click on the vbs
+- Double click on sln
+- Inside Visual Studio push F5
+- Click on Login
+
 ## Overview
 The Inventory Management System is designed for tracking, purchase management, and order processing. This application features a .NET Web API backend and a React frontend, providing a user-friendly interface.
 
