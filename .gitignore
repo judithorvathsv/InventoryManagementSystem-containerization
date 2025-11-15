@@ -1,0 +1,35 @@
+# .NET / Visual Studio
+
+bin/
+obj/
+*.user
+*.suo
+*.sln.docstates
+.vs/
+ProjectEvaluation/
+[Dd]ebug/
+[Rr]elease/
+*.cache
+*.tlog
+*.exe
+*.dll
+*.pdb
+*.csproj.nuget.g.props
+
+# VS Code / Copilot
+.vscode/
+CopilotIndices/
+FileContextIndex/
+.history/
+
+# Node.js / Frontend
+node_modules/
+.vite/
+dist/
+*.log
+*.env.local
+*.env.development.local
+
+# Miscellaneous
+Thumbs.db
+.DS_Store
