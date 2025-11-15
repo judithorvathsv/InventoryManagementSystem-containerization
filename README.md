@@ -1,10 +1,10 @@
 # Inventory Management System
 
 ## Run the app
-- Double click on the vbs
-- Double click on sln
-- Inside Visual Studio push F5
-- Click on Login
+- Start the backend from Visual Studio
+- Open the frontend in Visual Studio Code, install dependencies: npm install
+- Run the frontend: npm run dev
+- Click the login button in the running app
 
 ## Overview
 The Inventory Management System is designed for tracking, purchase management, and order processing. This application features a .NET Web API backend and a React frontend, providing a user-friendly interface.
