@@ -1,9 +1,12 @@
 # Inventory Management System
 
 ## Run the app
-- Start the backend from Visual Studio
-- Open the frontend in Visual Studio Code, install dependencies: npm install
-- Run the frontend: npm run dev
+- Open PowerShell then navigate to the backend project folder (where the .csproj file is located)
+- Check the installed .NET SDK version (dotnet --version). If the required version is not installed, download and install the appropriate .NET SDK
+- Run the API: dotnet run
+- Open the frontend project folder in Visual Studio Code and install dependencies: npm install
+- Start the development server: npm run dev
+- Open the displayed local URL (e.g., http://localhost:5173) in your browser
 - Click the login button in the running app
 
 ## Overview
