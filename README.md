@@ -36,14 +36,14 @@ The Inventory Management System is designed for tracking, purchase management, a
 - Database: SQL Server
 
 ## User stories:
-As a system user, I want to log in to the system, so that I can securely access its features based on my permissions.
-As an inventory manager, I want to add a product to the system, so that it can be tracked and used later for purchases, sales, or production.
-As an inventory manager, I want to see all products in the system, so that I can review stock items when purchasing, using them in another product, or selling them.
-As a business owner, I want to view the inventory overview including total stock value, so that I can understand the financial value of the stored products.
-As a purchasing manager, I want to see all purchases with their total cost and status, so that I can track spending and monitor order progress.
-As a business owner, I want to visualize purchase costs over time in a chart, so that I can analyze spending trends and make better financial decisions.
-As a warehouse employee, I want to see incoming purchases, so that I can receive or return them properly.
-As a sales manager, I want to see all orders, so that I can send or cancel them when necessary.
+- As a system user, I want to log in to the system, so that I can securely access its features based on my permissions.
+- As an inventory manager, I want to add a product to the system, so that it can be tracked and used later for purchases, sales, or production.
+- As an inventory manager, I want to see all products in the system, so that I can review stock items when purchasing, using them in another product, or selling them.
+- As a business owner, I want to view the inventory overview including total stock value, so that I can understand the financial value of the stored products.
+- As a purchasing manager, I want to see all purchases with their total cost and status, so that I can track spending and monitor order progress.
+- As a business owner, I want to visualize purchase costs over time in a chart, so that I can analyze spending trends and make better financial decisions.
+- As a warehouse employee, I want to see incoming purchases, so that I can receive or return them properly.
+- As a sales manager, I want to see all orders, so that I can send or cancel them when necessary.
 
 
 
