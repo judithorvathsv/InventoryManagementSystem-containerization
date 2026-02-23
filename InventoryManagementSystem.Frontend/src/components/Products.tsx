@@ -2,6 +2,7 @@ import { FormEvent, useContext, useState } from "react";
 import { ProductDatabaseProps, PurchaseSummary } from "../types";
 import { NavLink } from "react-router-dom";
 import { PurchaseContext } from "../context/PurchaseContextProvider";
+import { API_BASE_URL } from "../utils/apiBaseUrl";
 
 const Products = () => {
   const [notification, setNotification] = useState<string | null>(null);
@@ -9,8 +10,7 @@ const Products = () => {
   const [error, setError] = useState("");
 
   const [showPurchaseForm, setShowPurchaseForm] = useState(false);
-  const [selectedProduct, setSelectedProduct] =
-    useState<ProductDatabaseProps | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<ProductDatabaseProps | null>(null);
   const [quantity, setQuantity] = useState<number>(0);
 
   const [useProductFormVisible, setUseProductFormVisible] = useState(false);
@@ -41,17 +41,15 @@ const Products = () => {
     }
   });
 
-  const processedProducts = Object.entries(purchaseSummary).map(
-    ([id, summary]) => ({
-      id: Number(id),
-      productName: summary.productName,
-      categoryName: summary.categoryName,
-      totalQuantity: summary.totalQuantity,
-      totalQuantityPending: summary.totalQuantityPending,
-      suppliersList: Array.from(summary.suppliers!).join(", "),
-      unitPrice: summary.unitPrice,
-    })
-  );
+  const processedProducts = Object.entries(purchaseSummary).map(([id, summary]) => ({
+    id: Number(id),
+    productName: summary.productName,
+    categoryName: summary.categoryName,
+    totalQuantity: summary.totalQuantity,
+    totalQuantityPending: summary.totalQuantityPending,
+    suppliersList: Array.from(summary.suppliers!).join(", "),
+    unitPrice: summary.unitPrice,
+  }));
 
   const handleBuyAgain = (productId: number) => {
     window.scrollTo({
@@ -60,11 +58,7 @@ const Products = () => {
     });
     const lastPurchase = purchases
       .filter((p) => p.productId === productId)
-      .sort(
-        (a, b) =>
-          new Date(b.purchaseDate).getTime() -
-          new Date(a.purchaseDate).getTime()
-      )[0];
+      .sort((a, b) => new Date(b.purchaseDate).getTime() - new Date(a.purchaseDate).getTime())[0];
 
     if (lastPurchase) {
       setSelectedProduct({
@@ -93,8 +87,7 @@ const Products = () => {
     if (!selectedProduct) return;
 
     const supplierName =
-      selectedProduct.suppliersList &&
-      selectedProduct.suppliersList.includes(",")
+      selectedProduct.suppliersList && selectedProduct.suppliersList.includes(",")
         ? selectedProduct.suppliersList.split(", ")[0]
         : selectedProduct.suppliersList || "";
 
@@ -110,24 +103,20 @@ const Products = () => {
     };
 
     try {
-      const response = await fetch(
-        "http://localhost:5036/api/v1/products/purchase",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(purchaseData),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/api/v1/products/purchase`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(purchaseData),
+      });
 
-      if (!response.ok){
+      if (!response.ok) {
         console.error("Error creating purchase:", error);
         setError("Failed to create purchase");
-      } 
-      else{
+      } else {
         console.log("Purchase created successfully");
         setNotification(`Purchase created for ${purchaseData.productName}`);
         setTimeout(() => setNotification(null), 4000);
-        handleCancelPurchase();      
+        handleCancelPurchase();
         setTimeout(() => window.location.reload(), 4000);
       }
     } catch (error) {
@@ -136,14 +125,14 @@ const Products = () => {
     }
   };
 
-  const handleUseProduct = (productId: number) => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-    console.log(productId);
-    setUseProductFormVisible(true);
-  };
+  // const handleUseProduct = (productId: number) => {
+  //   window.scrollTo({
+  //     top: 0,
+  //     behavior: "smooth",
+  //   });
+  //   console.log(productId);
+  //   setUseProductFormVisible(true);
+  // };
 
   const handleSubmitUseProduct = (e: FormEvent<HTMLFormElement>) => {
     setError("This function is not ready, click on cancel");
@@ -158,16 +147,11 @@ const Products = () => {
     <div className="flex flex-col items-center w-full p-4">
       <h2 className="mb-4 text-center title bold-title">All Products</h2>
 
-      <NavLink
-        className="blue-button all-button mb-4 text-center md:self-end"
-        to={"/InventoryManagementSystem/newpurchase"}
-      >
+      <NavLink className="blue-button all-button mb-4 text-center md:self-end" to={"/newpurchase"}>
         New Purchase
       </NavLink>
 
-      {errorMessage && (
-        <div className="text-center red-text">{errorMessage}</div>
-      )}
+      {errorMessage && <div className="text-center red-text">{errorMessage}</div>}
       {error && <div className="text-center red-text">{error}</div>}
 
       {notification && (
@@ -177,10 +161,7 @@ const Products = () => {
       )}
 
       {showPurchaseForm && selectedProduct && (
-        <form
-          onSubmit={handleSubmitPurchase}
-          className="mb-8 p-4 border border-gray-300 rounded-lg "
-        >
+        <form onSubmit={handleSubmitPurchase} className="mb-8 p-4 border border-gray-300 rounded-lg ">
           <div className="flex items-center mb-2">
             <label className="font-bold w-1/2">Product Name:</label>
             <p className="flex-grow">{selectedProduct.productName}</p>
@@ -241,11 +222,7 @@ const Products = () => {
             <button type="submit" className="blue-button all-button mr-2">
               Save
             </button>
-            <button
-              type="button"
-              onClick={handleCancelPurchase}
-              className="grey-button all-button"
-            >
+            <button type="button" onClick={handleCancelPurchase} className="grey-button all-button">
               Cancel
             </button>
           </div>
@@ -272,11 +249,7 @@ const Products = () => {
             <button type="submit" className="navy-button all-button mr-2">
               Deduct
             </button>
-            <button
-              type="button"
-              onClick={handleCancelUseProduct}
-              className="grey-button all-button"
-            >
+            <button type="button" onClick={handleCancelUseProduct} className="grey-button all-button">
               Cancel
             </button>
           </div>
@@ -293,9 +266,7 @@ const Products = () => {
                 <th className="border border-gray-300 p-2">Product Name</th>
                 <th className="border border-gray-300 p-2">Category</th>
                 <th className="border border-gray-300 p-2">In stock (kg)</th>
-                <th className="border border-gray-300 p-2">
-                  Pending orders (kg)
-                </th>
+                <th className="border border-gray-300 p-2">Pending orders (kg)</th>
                 <th className="border border-gray-300 p-2">Supplier Name(s)</th>
                 <th className="border border-gray-300 p-2">Actions</th>
               </tr>
@@ -303,21 +274,15 @@ const Products = () => {
             <tbody>
               {processedProducts.map((product) => (
                 <tr key={product.id}>
-                  <td className="border border-gray-300 p-2 w-1/7 whitespace-normal">
-                    {product.productName}
-                  </td>
+                  <td className="border border-gray-300 p-2 w-1/7 whitespace-normal">{product.productName}</td>
                   <td className="border border-gray-300 p-2 w-1/7 whitespace-normal">
                     {product.categoryName || "N/A"}
                   </td>
-                  <td className="border border-gray-300 p-2 w-1/7 whitespace-normal">
-                    {product.totalQuantity}
-                  </td>
+                  <td className="border border-gray-300 p-2 w-1/7 whitespace-normal">{product.totalQuantity}</td>
                   <td className="border border-gray-300 p-2 w-1/7 whitespace-normal green-text">
                     {product.totalQuantityPending}
                   </td>
-                  <td className="border border-gray-300 p-2 w-1/7 whitespace-normal ">
-                    {product.suppliersList}
-                  </td>
+                  <td className="border border-gray-300 p-2 w-1/7 whitespace-normal ">{product.suppliersList}</td>
 
                   <td className="border border-gray-300 p-2 w-2/7">
                     <div className="flex flex-col md:flex-row md:space-x-2">
@@ -327,12 +292,12 @@ const Products = () => {
                       >
                         Purchase Again
                       </button>
-                      <button
+                      {/* <button
                         onClick={() => handleUseProduct(product.id)}
                         className="navy-button all-button mb-2 md:mb-0"
                       >
                         Use Product
-                      </button>
+                      </button> */}
                     </div>
                   </td>
                 </tr>
@@ -344,9 +309,7 @@ const Products = () => {
           <div className="block lg:hidden ">
             {processedProducts.map((product) => (
               <div key={product.id} className="border border-gray-300 mb-4 p-4">
-                <h3 className="font-bold medium-title">
-                  {product.productName}
-                </h3>
+                <h3 className="font-bold medium-title">{product.productName}</h3>
 
                 <div className="flex items-center mb-2">
                   <label className="font-bold w-1/3 mr-2">Category:</label>
@@ -357,12 +320,8 @@ const Products = () => {
                   <p>{product.totalQuantity} kg</p>
                 </div>
                 <div className="flex items-center mb-2">
-                  <label className="font-bold w-1/3 mr-2">
-                    Pending orders:
-                  </label>
-                  <p className="green-text">
-                    {product.totalQuantityPending} kg
-                  </p>
+                  <label className="font-bold w-1/3 mr-2">Pending orders:</label>
+                  <p className="green-text">{product.totalQuantityPending} kg</p>
                 </div>
 
                 <div className="flex items-center mb-2">
@@ -371,27 +330,22 @@ const Products = () => {
                 </div>
 
                 <div className="flex items-center mb-2">
-                  <button
-                    onClick={() => handleBuyAgain(product.id)}
-                    className="blue-button all-button mr-2 mt-2"
-                  >
+                  <button onClick={() => handleBuyAgain(product.id)} className="blue-button all-button mr-2 mt-2">
                     Purchase Again
                   </button>
-                  <button
+                  {/* <button
                     onClick={() => handleUseProduct(product.id)}
                     className="navy-button all-button mt-2"
                   >
                     Use Product
-                  </button>
+                  </button> */}
                 </div>
               </div>
             ))}
           </div>
         </div>
       ) : (
-        <p className="text-center w-full p-4">
-          No products have been added yet.
-        </p>
+        <p className="text-center w-full p-4">No products have been added yet.</p>
       )}
     </div>
   );

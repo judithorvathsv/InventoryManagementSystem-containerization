@@ -23,7 +23,7 @@ const Orders = () => {
 
       <NavLink
         className="blue-button all-button mb-4 text-center md:self-end"
-        to={"/InventoryManagementSystem/neworder"}
+        to={"/neworder"}
       >
         New Order
       </NavLink>

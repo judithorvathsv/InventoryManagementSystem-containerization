@@ -5,7 +5,7 @@ import UpperNavBar from "./components/upperNavBar";
 
 function App() {
   const location = useLocation();
-  const isLogin = location.pathname === "/InventoryManagementSystem/login" || location.pathname === "/InventoryManagementSystem/";
+  const isLogin = location.pathname === "/login" || location.pathname === "/";
   const hideMobileNavBar = () => {};
 
   return (

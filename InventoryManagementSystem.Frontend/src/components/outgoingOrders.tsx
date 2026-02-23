@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { OrderContext } from "../context/OrderContextProvider";
 import { OrderProps } from "../types";
 import { formatDate } from "../utils/formatDateTime";
+import { API_BASE_URL } from "../utils/apiBaseUrl";
 
 const OutgoingOrders = () => {
   const { orders, errorMessage, updateOrderStatus } = useContext(OrderContext);
@@ -40,12 +41,12 @@ const OutgoingOrders = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:5036/api/v1/orders/${selectedOrder.id}/send`,
+          `${API_BASE_URL}/api/v1/orders/${selectedOrder.id}/send`,       
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(request),
-          }
+          },
         );
 
         if (!response.ok) {

@@ -1,6 +1,7 @@
 import { ReactElement, createContext, useEffect, useState } from "react";
 import { OrderProps } from "../types";
 import { fetchOrders } from "../utils/fetchOrders";
+import { API_BASE_URL } from "../utils/apiBaseUrl";
 
 interface IOrderContex {
   orders: OrderProps[];
@@ -8,7 +9,7 @@ interface IOrderContex {
   errorMessage: string;
   setShouldFetchData: React.Dispatch<React.SetStateAction<boolean>>;
   updateOrderStatus: (id: number, newStatusId: number) => void;
-  updateFromDatabase:()=> void;
+  updateFromDatabase: () => void;
 }
 
 interface IOrderContextProvider {
@@ -17,16 +18,14 @@ interface IOrderContextProvider {
 
 export const OrderContext = createContext({} as IOrderContex);
 
-export function OrderContextProvider({
-  children,
-}: IOrderContextProvider): ReactElement {
+export function OrderContextProvider({ children }: IOrderContextProvider): ReactElement {
   const [orders, setOrders] = useState<OrderProps[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [shouldFetchData, setShouldFetchData] = useState(false);
 
- const updateFromDatabase = () =>{
-  setShouldFetchData(!shouldFetchData);
- }
+  const updateFromDatabase = () => {
+    setShouldFetchData(!shouldFetchData);
+  };
 
   const loadOrders = async () => {
     const { result, errorMessage } = await fetchOrders();
@@ -43,21 +42,14 @@ export function OrderContextProvider({
   }, [shouldFetchData]);
 
   const updateOrderStatus = async (id: number, newStatusId: number) => {
-    setOrders((prev) =>
-      prev.map((order) =>
-        order.id === id ? { ...order, orderStatusId: newStatusId } : order
-      )
-    );
+    setOrders((prev) => prev.map((order) => (order.id === id ? { ...order, orderStatusId: newStatusId } : order)));
 
     try {
-      const response = await fetch(
-        `http://localhost:5036/api/v1/orders/${id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newStatusId),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/api/v1/orders/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newStatusId),
+      });
 
       if (!response.ok) {
         setErrorMessage("Failed to update order status");
@@ -82,10 +74,8 @@ export function OrderContextProvider({
     errorMessage,
     setShouldFetchData,
     updateOrderStatus,
-    updateFromDatabase
+    updateFromDatabase,
   };
 
-  return (
-    <OrderContext.Provider value={values}>{children}</OrderContext.Provider>
-  );
+  return <OrderContext.Provider value={values}>{children}</OrderContext.Provider>;
 }

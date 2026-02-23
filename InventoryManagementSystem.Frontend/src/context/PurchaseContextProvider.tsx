@@ -1,6 +1,7 @@
 import { ReactElement, createContext, useEffect, useState } from "react";
 import { PurchaseProps } from "../types";
 import { fetchPurchases } from "../utils/fetchPurchases";
+import { API_BASE_URL } from "../utils/apiBaseUrl";
 
 interface IPurchaseContex {
   purchases: PurchaseProps[];
@@ -16,9 +17,7 @@ interface IPurchaseContextProvider {
 
 export const PurchaseContext = createContext({} as IPurchaseContex);
 
-export function PurchaseContextProvider({
-  children,
-}: IPurchaseContextProvider): ReactElement {
+export function PurchaseContextProvider({ children }: IPurchaseContextProvider): ReactElement {
   const [purchases, setPurchases] = useState<PurchaseProps[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [shouldFetchData, setShouldFetchData] = useState(false);
@@ -39,22 +38,15 @@ export function PurchaseContextProvider({
 
   const updatePurchaseStatus = async (id: number, newStatusId: number) => {
     setPurchases((prevPurchases) =>
-      prevPurchases.map((purchase) =>
-        purchase.id === id
-          ? { ...purchase, purchaseStatusId: newStatusId }
-          : purchase
-      )
+      prevPurchases.map((purchase) => (purchase.id === id ? { ...purchase, purchaseStatusId: newStatusId } : purchase)),
     );
 
     try {
-      const response = await fetch(
-        `http://localhost:5036/api/v1/products/purchase/${id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(newStatusId),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/api/v1/products/purchase/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newStatusId),
+      });
 
       if (!response.ok) {
         setErrorMessage("Failed to update purchase status");
@@ -81,9 +73,5 @@ export function PurchaseContextProvider({
     updatePurchaseStatus,
   };
 
-  return (
-    <PurchaseContext.Provider value={values}>
-      {children}
-    </PurchaseContext.Provider>
-  );
+  return <PurchaseContext.Provider value={values}>{children}</PurchaseContext.Provider>;
 }

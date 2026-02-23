@@ -23,7 +23,7 @@ const Purchases = () => {
 
       <NavLink
         className="blue-button all-button mb-4 text-center md:self-end"
-        to={"/InventoryManagementSystem/linechart"}
+        to={"/linechart"}
       >
         Show cost in diagram
       </NavLink>

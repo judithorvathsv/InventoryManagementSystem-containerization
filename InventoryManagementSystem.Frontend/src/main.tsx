@@ -18,58 +18,63 @@ import { OrderContextProvider } from "./context/OrderContextProvider";
 import OutgoingOrders from "./components/outgoingOrders";
 import Charts from "./components/charts";
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <App />,
+      children: [
+        {
+          index: true,
+          element: <Login />,
+        },
+        {
+          path: "login",
+          element: <Login />,
+        },
+        {
+          path: "products",
+          element: <Products />,
+        },
+        {
+          path: "newpurchase",
+          element: <PurchaseForm />,
+        },
+        {
+          path: "purchases",
+          element: <Purchases />,
+        },
+        {
+          path: "inventory",
+          element: <Inventory />,
+        },
+        {
+          path: "incoming-purchases",
+          element: <IncomingPurchases />,
+        },
+        {
+          path: "neworder",
+          element: <OrderForm />,
+        },
+        {
+          path: "orders",
+          element: <Orders />,
+        },
+        {
+          path: "outgoing-orders",
+          element: <OutgoingOrders />,
+        },
+        {
+          path: "linechart",
+          element: <Charts />,
+        },
+      ],
+    },
+  ],
   {
-    path: "/InventoryManagementSystem/",      
-    element: <App />,
-    children: [
-      {
-        index: true,
-        element: <Login />,
-      },
-      {
-        path: "login",
-        element: <Login />,
-      },
-      {
-        path: "products",
-        element: <Products />,
-      },
-      {
-        path: "newpurchase",
-        element: <PurchaseForm />,
-      },
-      {
-        path: "purchases",
-        element: <Purchases />,
-      },
-      {
-        path: "inventory",
-        element: <Inventory />,
-      },
-      {
-        path: "incoming-purchases",
-        element: <IncomingPurchases />,
-      },
-      {
-        path: "neworder",
-        element: <OrderForm />,
-      },
-      {
-        path: "orders",
-        element: <Orders />,
-      },
-      {
-        path: "outgoing-orders",
-        element: <OutgoingOrders />,
-      },
-      {
-        path: "linechart",
-        element: <Charts />,
-      },
-    ],
+    basename: "/",
   },
-]);
+);
 
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -78,5 +83,5 @@ createRoot(document.getElementById("root")!).render(
         <RouterProvider router={router} />
       </OrderContextProvider>
     </PurchaseContextProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

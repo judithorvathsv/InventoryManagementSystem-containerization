@@ -1,4 +1,5 @@
 import { ProductDatabaseProps } from "../types";
+import { API_BASE_URL } from "./apiBaseUrl";
 
 export const fetchProducts = async (): Promise<{
   result?: ProductDatabaseProps[];
@@ -8,10 +9,9 @@ export const fetchProducts = async (): Promise<{
   let result: ProductDatabaseProps[] = [];
 
   try {
-    const response = await fetch("http://localhost:5036/api/v1/products");
+    const response = await fetch(`${API_BASE_URL}/api/v1/products`);
 
-    if (!response.ok) {     
-      errorMessage = "Failed to fetch the products";
+    if (!response.ok) {   
       throw new Error("Failed to fetch the products");
     }
     result = await response.json();

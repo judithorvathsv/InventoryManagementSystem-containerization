@@ -38,8 +38,10 @@ const Login = () => {
               className="input input-bordered flex items-center gap-2 w-full"
             />
           </div>
-        </section>       
-        <NavLink className="mt-4 blue-button all-button" to={"/InventoryManagementSystem/products"}>Login</NavLink>
+        </section>
+        <NavLink className="mt-4 blue-button all-button" to="/products">
+          Login
+        </NavLink>
       </article>
     </article>
   );

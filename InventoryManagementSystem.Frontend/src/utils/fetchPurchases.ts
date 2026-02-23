@@ -1,4 +1,5 @@
 import { PurchaseProps } from "../types";
+import { API_BASE_URL } from "./apiBaseUrl";
 
 export const fetchPurchases = async (): Promise<{
   result?: PurchaseProps[];
@@ -8,14 +9,13 @@ export const fetchPurchases = async (): Promise<{
   let result: PurchaseProps[] = [];
 
   try {
-    const response = await fetch("http://localhost:5036/api/v1/products/purchases");
+    const response = await fetch(`${API_BASE_URL}/api/v1/products/purchases`);
 
     if (!response.ok) {
-      errorMessage = "Failed to fetch the purchases";
       throw new Error(errorMessage);
     }
 
-    result = await response.json(); 
+    result = await response.json();
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error("Error: ", error);

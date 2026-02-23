@@ -3,6 +3,7 @@ import { OrderProps, ProductDatabaseProps } from "../types";
 import { useNavigate } from "react-router-dom";
 import { fetchProducts } from "../utils/fetchProduct";
 import { OrderContext } from "../context/OrderContextProvider";
+import { API_BASE_URL } from "../utils/apiBaseUrl";
 
 const OrderForm = () => {
   const { updateFromDatabase } = useContext(OrderContext);
@@ -81,7 +82,7 @@ const OrderForm = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5036/api/v1/orders", {
+      const response = await fetch(`${API_BASE_URL}/api/v1/orders`,  {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(order),
@@ -103,7 +104,7 @@ const OrderForm = () => {
         });
         setErrorMessage("");
         updateFromDatabase();
-        navigate("/InventoryManagementSystem/orders", { 
+        navigate("/orders", { 
           state: { message: `Order created for ${order.productName}` }
         })
       } 
@@ -124,7 +125,7 @@ const OrderForm = () => {
       totalPrice: 0,
     });
     setErrorMessage("");
-    navigate("/InventoryManagementSystem/orders");
+    navigate("/orders");
   };
 
   return (

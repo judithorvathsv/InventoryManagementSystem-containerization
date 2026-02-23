@@ -1,0 +1,56 @@
+# ---------------- NETWORK ----------------
+networks:
+  ims-network:
+
+# ---------------- VOLUMES ----------------
+volumes:
+  sqlserver_data:
+
+services:
+  # ---------------- SQL DB ----------------
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: inventoryDatabase
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=StrongP@ssword1
+      - MSSQL_PID=Developer
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - ims-network
+
+  # ---------------- BACKEND ----------------
+  api:
+    build:
+      context: ./InventoryManagementSystem.Api
+      dockerfile: Dockerfile
+    image: inventory-api
+    container_name: inventoryApi
+    ports:
+      - 5000:8080
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=database;Database=inventory;User Id=sa;Password=StrongP@ssword1;TrustServerCertificate=True;MultipleActiveResultSets=true
+    depends_on:
+      - database
+    networks:
+      - ims-network
+
+  # ---------------- FRONTEND ----------------
+  frontend:
+    build:
+      context: ./InventoryManagementSystem.Frontend
+      dockerfile: Dockerfile
+    image: inventory-frontend
+    container_name: inventoryFrontend
+    ports:
+      - 3000:80
+    environment:
+      - VITE_API_URL=localhost:5000
+    depends_on:
+      - api
+    networks:
+      - ims-network

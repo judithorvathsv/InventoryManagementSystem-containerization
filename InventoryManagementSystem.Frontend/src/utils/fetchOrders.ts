@@ -1,4 +1,5 @@
 import { OrderProps } from "../types";
+import { API_BASE_URL } from "./apiBaseUrl";
 
 export const fetchOrders = async (): Promise<{
   result?: OrderProps[];
@@ -8,10 +9,9 @@ export const fetchOrders = async (): Promise<{
   let result: OrderProps[] = [];
 
   try {
-    const response = await fetch("http://localhost:5036/api/v1/orders");
-
+    const response = await fetch(`${API_BASE_URL}/api/v1/orders`);
+    
     if (!response.ok) {
-      errorMessage = "Failed to fetch orders";
       throw new Error(errorMessage);
     }
 

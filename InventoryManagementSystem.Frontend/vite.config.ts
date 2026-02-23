@@ -4,7 +4,16 @@ import react from "@vitejs/plugin-react";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: "/InventoryManagementSystem/",
+  base: "/",
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:5036", 
+        changeOrigin: true,
+        rewrite: (path) => path, 
+      },
+    },
+  },
   build: {
     outDir: "dist",
   },

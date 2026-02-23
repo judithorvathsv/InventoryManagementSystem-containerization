@@ -3,6 +3,7 @@ import { CategoryProps, ProductProps } from "../types";
 import { fetchCategories } from "../utils/fetchCategory";
 import { useNavigate } from "react-router-dom";
 import { PurchaseContext } from "../context/PurchaseContextProvider";
+import { API_BASE_URL } from "../utils/apiBaseUrl";
 
 const PurchaseForm = () => {
   const [product, setProduct] = useState<ProductProps>({
@@ -70,14 +71,11 @@ const PurchaseForm = () => {
     };
 
     try {
-      const response = await fetch(
-        "http://localhost:5036/api/v1/products/purchase",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formattedProduct),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/api/v1/products/purchase`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formattedProduct),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to create purchase");
@@ -92,7 +90,7 @@ const PurchaseForm = () => {
         categoryId: 0,
       });
       setErrorMessage("");
-      navigate("/InventoryManagementSystem/purchases", { 
+      navigate("/purchases", { 
         state: { message: `Purchase created for ${product.productName}` }
       })
     } catch (error) {
@@ -112,7 +110,7 @@ const PurchaseForm = () => {
     });
     setErrorMessage("");
 
-    navigate("/InventoryManagementSystem/products");
+    navigate("/products");
   };
 
   return (

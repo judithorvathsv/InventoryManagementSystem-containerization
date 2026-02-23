@@ -1,4 +1,5 @@
 import { CategoryProps } from "../types";
+import { API_BASE_URL } from "./apiBaseUrl";
 
 export const fetchCategories = async (): Promise<{
   result?: CategoryProps[];
@@ -7,11 +8,10 @@ export const fetchCategories = async (): Promise<{
   let errorMessage = "";
   let result: CategoryProps[] = [];
 
-  try {
-    const response = await fetch("http://localhost:5036/api/v1/categories");
+  try { 
+    const response = await fetch(`${API_BASE_URL}/api/v1/categories`);
 
-    if (!response.ok) {
-      errorMessage = "Failed to fetch the categories";
+    if (!response.ok) {  
       throw new Error("Failed to fetch the categories");
     }
 
